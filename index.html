@@ -1,0 +1,1008 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>🎂 Lydia's Birthday Café — Melkam Lidet!</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=VT323&family=Special+Elite&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --teal: #005f5a;
+      --cream: #FFF8EC;
+      --brown: #5C3317;
+      --gold: #D4AF37;
+      --green: #078930;
+      --yellow: #FCDD09;
+      --red: #DA121A;
+      --gray: #C0C0C0;
+      --dark-gray: #808080;
+      --blue: #000080;
+      --white: #FFFFFF;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'VT323', monospace;
+      min-height: 100vh;
+      background: var(--teal);
+      overflow-x: hidden;
+    }
+
+    /* ── BOOT SCREEN ── */
+    #boot {
+      position: fixed; inset: 0;
+      background: #000;
+      color: #00cc00;
+      font-family: 'VT323', monospace;
+      font-size: clamp(14px, 2.2vw, 18px);
+      padding: 24px;
+      z-index: 9999;
+      cursor: pointer;
+      overflow: hidden;
+    }
+    #boot-lines > div { line-height: 1.65; white-space: pre-wrap; }
+    .b-title  { color: #fff; font-size: 1.3em; }
+    .b-ok     { color: #00ffcc; }
+    .b-warn   { color: #ffcc00; }
+    .b-glow   { color: #00cc00; }
+    .blink { animation: blink 1s step-end infinite; }
+    @keyframes blink { 0%,100%{opacity:1} 50%{opacity:0} }
+
+    /* ── DESKTOP ── */
+    #desktop {
+      display: none;
+      min-height: 100vh;
+      padding: 18px 14px 56px;
+      background-color: var(--teal);
+      background-image:
+        radial-gradient(circle at 15% 40%, rgba(218,18,26,0.07) 0%, transparent 50%),
+        radial-gradient(circle at 85% 65%, rgba(7,137,48,0.07) 0%, transparent 50%),
+        repeating-linear-gradient(45deg, transparent, transparent 18px, rgba(252,221,9,0.025) 18px, rgba(252,221,9,0.025) 19px),
+        repeating-linear-gradient(-45deg, transparent, transparent 18px, rgba(252,221,9,0.025) 18px, rgba(252,221,9,0.025) 19px);
+      position: relative;
+    }
+
+    /* ── HEADER ── */
+    .cafe-hdr {
+      text-align: center;
+      padding: 12px 8px 16px;
+      margin-bottom: 14px;
+    }
+    .cafe-title {
+      font-size: clamp(28px, 7vw, 62px);
+      color: var(--cream);
+      text-shadow: 3px 3px 0 var(--brown), 0 0 30px rgba(212,175,55,0.4);
+      line-height: 1.1;
+    }
+    .cafe-sub {
+      font-size: clamp(14px, 3vw, 22px);
+      color: var(--yellow);
+      text-shadow: 1px 1px 0 var(--brown);
+      margin-top: 4px;
+    }
+    .eth-bar {
+      height: 6px;
+      background: linear-gradient(90deg, var(--green) 33%, var(--yellow) 33%, var(--yellow) 66%, var(--red) 66%);
+      max-width: 360px;
+      margin: 10px auto;
+      border-radius: 3px;
+    }
+
+    /* ── WINDOWS ── */
+    .win {
+      background: var(--gray);
+      border: 2px solid;
+      border-color: var(--white) var(--dark-gray) var(--dark-gray) var(--white);
+      box-shadow: 2px 2px 0 #000;
+      margin-bottom: 14px;
+    }
+    .win-bar {
+      background: linear-gradient(90deg, var(--blue), #1a6bb5);
+      color: #fff;
+      padding: 3px 6px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      user-select: none;
+    }
+    .win-bar span { font-size: clamp(12px, 1.8vw, 15px); letter-spacing: 0.4px; }
+    .win-ctrls { display: flex; gap: 2px; }
+    .wbtn {
+      width: 16px; height: 14px;
+      background: var(--gray);
+      border: 1px solid; border-color: var(--white) var(--dark-gray) var(--dark-gray) var(--white);
+      font-size: 9px; cursor: pointer;
+      display: flex; align-items: center; justify-content: center;
+      font-family: Arial, sans-serif; line-height: 1;
+    }
+    .win-body {
+      padding: 14px;
+      background: var(--cream);
+      border: 2px inset var(--gray);
+      font-size: clamp(15px, 2.2vw, 18px);
+      line-height: 1.55;
+      color: var(--brown);
+    }
+
+    /* ── LAYOUT GRID ── */
+    .g2 { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; max-width: 960px; margin: 0 auto; }
+    @media (max-width: 640px) { .g2 { grid-template-columns: 1fr; } }
+
+    /* ── BUTTONS ── */
+    .btn {
+      font-family: 'VT323', monospace;
+      font-size: clamp(15px, 2.2vw, 18px);
+      padding: 5px 14px;
+      background: var(--gray);
+      border: 2px solid; border-color: var(--white) var(--dark-gray) var(--dark-gray) var(--white);
+      cursor: pointer; letter-spacing: 0.5px; margin: 4px 3px; color: #000;
+    }
+    .btn:active { border-color: var(--dark-gray) var(--white) var(--white) var(--dark-gray); transform: translate(1px,1px); }
+    .btn-blue  { background: var(--blue); color: #fff; }
+    .btn-green { background: var(--green); color: #fff; }
+    .btn-gold  { background: var(--gold); color: var(--brown); }
+
+    /* ── INBOX ── */
+    .inbox-hdr { background: #e0e0e0; padding: 5px 12px; font-size: 13px; border-bottom: 1px solid #bbb; }
+    .inbox-row { display: flex; align-items: flex-start; gap: 8px; padding: 8px 12px; border-bottom: 1px solid #ddd; font-size: clamp(13px, 1.8vw, 16px); }
+    .inbox-row:last-child { border: none; }
+    .i-from { color: var(--blue); min-width: 90px; flex-shrink: 0; font-weight: bold; }
+    .i-subj { flex: 1; color: #222; }
+    .i-new  { background: var(--red); color: #fff; font-size: 11px; padding: 1px 5px; border-radius: 3px; flex-shrink: 0; }
+
+    /* ── PC STATS ── */
+    .pc { font-size: clamp(14px, 2vw, 17px); line-height: 2; color: var(--brown); }
+    .pc .lbl { color: var(--blue); font-family: 'Special Elite', serif; min-width: 100px; display: inline-block; }
+
+    /* ── RADIO ── */
+    .radio-scr {
+      background: #111; border: 2px inset #333;
+      padding: 10px 14px; min-height: 72px; margin: 8px 0;
+    }
+    .radio-hdr { color: var(--yellow); font-size: 12px; letter-spacing: 1px; margin-bottom: 6px; }
+    .radio-txt { color: #00cc66; font-size: clamp(15px, 2.2vw, 18px); line-height: 1.5; }
+
+    /* ── BUNA ── */
+    .cups { display: flex; gap: 12px; margin: 10px 0; align-items: center; }
+    .cup { font-size: 36px; opacity: 0.2; filter: grayscale(1); transition: all 0.4s; }
+    .cup.on { opacity: 1; filter: none; animation: wobble 0.5s ease; }
+    @keyframes wobble { 0%,100%{transform:rotate(0)} 25%{transform:rotate(-9deg)} 75%{transform:rotate(9deg)} }
+    .comp-card {
+      background: var(--white); border: 2px solid var(--brown);
+      border-left: 6px solid var(--gold);
+      padding: 10px 12px; margin: 8px 0;
+      font-size: clamp(15px, 2.2vw, 18px); font-style: italic;
+      color: var(--brown); min-height: 48px;
+    }
+
+    /* ── PHOTO STUDIO ── */
+    .photo-frame {
+      background: #111; border: 10px solid var(--brown); outline: 2px solid var(--gold);
+      padding: 16px; text-align: center; margin: 10px 0; min-height: 108px;
+      display: flex; flex-direction: column; align-items: center; justify-content: center;
+      box-shadow: inset 0 0 30px rgba(0,0,0,0.6), 4px 4px 0 rgba(0,0,0,0.4);
+    }
+    .p-emoji { font-size: clamp(44px, 8vw, 60px); }
+    .p-caption { font-family: 'Special Elite', serif; font-size: clamp(11px, 1.6vw, 14px); color: var(--gold); margin-top: 6px; white-space: pre-line; text-align: center; }
+    .pose-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; margin: 10px 0; }
+    .pbtn {
+      font-family: 'VT323', monospace; font-size: clamp(13px, 1.9vw, 16px);
+      padding: 9px 6px; background: var(--gray);
+      border: 2px solid; border-color: var(--white) var(--dark-gray) var(--dark-gray) var(--white);
+      cursor: pointer; text-align: center; color: #000; line-height: 1.3;
+    }
+    .pbtn:active { border-color: var(--dark-gray) var(--white) var(--white) var(--dark-gray); }
+
+    /* ── CASSETTE ── */
+    .cass-body { background: #1c1c1c; border-radius: 8px; border: 3px solid #444; padding: 14px; margin: 10px 0; }
+    .cass-label {
+      background: linear-gradient(135deg, #7a0000, var(--gold));
+      border-radius: 4px; padding: 8px 12px; margin-bottom: 10px;
+      text-align: center; color: #fff;
+      font-family: 'Special Elite', serif; font-size: clamp(11px, 1.7vw, 14px); letter-spacing: 1px;
+    }
+    .cass-holes { display: flex; justify-content: space-around; margin: 8px 0; align-items: center; }
+    .reel {
+      width: 38px; height: 38px; border: 3px solid #555; border-radius: 50%;
+      background: #2a2a2a; display: flex; align-items: center; justify-content: center; color: #666; font-size: 18px;
+    }
+    .reel.spin { animation: spin 0.6s linear infinite; }
+    @keyframes spin { to { transform: rotate(360deg); } }
+    .tape-msg {
+      background: #0a0a0a; color: var(--yellow);
+      padding: 12px; font-family: 'VT323', monospace;
+      font-size: clamp(15px, 2.2vw, 18px); min-height: 100px;
+      margin-top: 10px; line-height: 1.5; border: 1px solid #222;
+    }
+
+    /* ── TRACKER ── */
+    .tracker { text-align: center; color: var(--yellow); font-size: clamp(14px, 2vw, 18px); margin: 10px 0 6px; text-shadow: 1px 1px 0 rgba(0,0,0,0.5); }
+    .unlock-wrap { text-align: center; margin: 14px 0 0; }
+    #unlock-btn {
+      font-family: 'VT323', monospace; font-size: clamp(18px, 3vw, 24px);
+      padding: 10px 28px; background: var(--gold); color: var(--brown);
+      border: 3px solid; border-color: #fff8aa #8b6914 #8b6914 #fff8aa;
+      cursor: pointer; letter-spacing: 1px;
+      box-shadow: 3px 3px 0 rgba(0,0,0,0.4);
+      animation: pulse-btn 2s ease-in-out infinite;
+      display: none;
+    }
+    #unlock-btn.vis { display: inline-block; }
+    @keyframes pulse-btn {
+      0%,100% { box-shadow: 3px 3px 0 rgba(0,0,0,0.4); }
+      50% { box-shadow: 3px 3px 20px rgba(212,175,55,0.9); transform: scale(1.03); }
+    }
+
+    /* ── TASKBAR ── */
+    #tb {
+      position: fixed; bottom: 0; left: 0; right: 0; height: 38px;
+      background: var(--gray); border-top: 2px solid var(--white);
+      display: none; align-items: center; padding: 0 4px; z-index: 1000; gap: 4px;
+    }
+    #tb.show { display: flex; }
+    .tb-start {
+      background: var(--gray); border: 2px solid; border-color: var(--white) var(--dark-gray) var(--dark-gray) var(--white);
+      padding: 2px 10px; font-family: 'VT323', monospace; font-size: 17px; font-weight: bold; cursor: pointer;
+      display: flex; align-items: center; gap: 4px;
+    }
+    .tb-start:active { border-color: var(--dark-gray) var(--white) var(--white) var(--dark-gray); }
+    .tb-div { width: 2px; height: 26px; background: linear-gradient(to right, var(--dark-gray), var(--white)); margin: 0 4px; }
+    .tb-icns { font-size: 17px; }
+    .tb-clk { margin-left: auto; background: var(--gray); border: 2px inset var(--dark-gray); padding: 2px 8px; font-family: 'VT323', monospace; font-size: 15px; }
+
+    /* ── START MENU ── */
+    #smenu {
+      position: fixed; bottom: 38px; left: 0;
+      background: var(--gray); border: 2px solid; border-color: var(--white) var(--dark-gray) var(--dark-gray) var(--white);
+      box-shadow: 4px 4px 0 #000; z-index: 1100; min-width: 190px; display: none; flex-direction: column;
+    }
+    #smenu.show { display: flex; }
+    .sm-item { padding: 7px 16px; cursor: pointer; font-size: 16px; display: flex; align-items: center; gap: 8px; color: #000; }
+    .sm-item:hover { background: var(--blue); color: #fff; }
+    .sm-sep { height: 1px; background: var(--dark-gray); margin: 4px 0; }
+
+    /* ── POPUP ── */
+    #popup {
+      position: fixed; top: 50%; left: 50%; transform: translate(-50%,-50%);
+      background: var(--gray); border: 2px solid; border-color: var(--white) var(--dark-gray) var(--dark-gray) var(--white);
+      box-shadow: 4px 4px 0 #000; z-index: 9100; min-width: 260px; max-width: 380px; display: none;
+    }
+    #popup.show { display: block; }
+    .pop-bar {
+      background: linear-gradient(90deg, var(--red), #bb0050); color: #fff;
+      padding: 4px 8px; font-size: 14px;
+      display: flex; justify-content: space-between; align-items: center;
+    }
+    .pop-body { padding: 16px; font-size: clamp(14px, 2vw, 17px); color: #000; line-height: 1.65; }
+    .pop-icon { font-size: 28px; margin-bottom: 8px; }
+
+    /* ── TOAST (Ato Tesfaye) ── */
+    #toast {
+      position: fixed; bottom: 50px; left: 50%;
+      transform: translateX(-50%) translateY(120px);
+      background: var(--cream); border: 2px solid var(--brown); border-left: 6px solid var(--gold);
+      padding: 10px 16px; font-size: clamp(14px, 2vw, 16px); max-width: 360px; width: 92%;
+      color: var(--brown); z-index: 9500; box-shadow: 3px 3px 0 rgba(0,0,0,0.3);
+      transition: transform 0.4s ease; font-family: 'VT323', monospace;
+    }
+    #toast.show { transform: translateX(-50%) translateY(0); }
+
+    /* ── FINAL SCREEN ── */
+    #final {
+      display: none; position: fixed; inset: 0;
+      background: radial-gradient(ellipse at center, #1a0800 0%, #000 100%);
+      z-index: 9000; overflow-y: auto; text-align: center;
+      padding: 40px 20px 80px;
+      flex-direction: column; align-items: center; justify-content: flex-start;
+    }
+    #final.show { display: flex; }
+    .f-pre { color: var(--yellow); font-size: clamp(13px, 1.8vw, 17px); letter-spacing: 2px; opacity: 0.75; margin-bottom: 8px; }
+    .f-name {
+      font-size: clamp(46px, 12vw, 100px); color: var(--yellow);
+      text-shadow: 0 0 30px var(--yellow), 0 0 60px var(--red);
+      animation: nameGlow 2.5s ease-in-out infinite; line-height: 1;
+    }
+    @keyframes nameGlow {
+      0%,100% { text-shadow: 0 0 30px var(--yellow), 0 0 60px var(--red); }
+      50% { text-shadow: 0 0 60px #fff, 0 0 100px var(--yellow), 0 0 160px var(--red); }
+    }
+    .f-amh { font-size: clamp(22px, 5.5vw, 46px); color: var(--green); text-shadow: 0 0 10px rgba(7,137,48,0.8); margin: 6px 0; }
+    .f-bar { width: 100%; max-width: 340px; height: 6px; background: linear-gradient(90deg, var(--green) 33%, var(--yellow) 33%, var(--yellow) 66%, var(--red) 66%); margin: 16px auto; border-radius: 3px; }
+    .f-msg {
+      font-family: 'Special Elite', serif; font-size: clamp(15px, 2.6vw, 21px);
+      color: var(--cream); max-width: 580px; line-height: 1.85; margin: 0 auto 20px;
+      opacity: 0; animation: fadeIn 1.2s ease 0.6s forwards;
+    }
+    @keyframes fadeIn { to { opacity: 1; } }
+    .f-icons { font-size: clamp(26px, 5.5vw, 42px); margin: 10px 0; letter-spacing: 6px; animation: bounce 1s ease infinite alternate; }
+    @keyframes bounce { from{transform:translateY(0)} to{transform:translateY(-8px)} }
+    .f-extra { font-family: 'VT323', monospace; font-size: 17px; color: #777; margin-top: 18px; font-style: italic; }
+
+    /* ── FLOATING ITEMS ── */
+    .floatie { position: fixed; pointer-events: none; z-index: 2; animation: floatUp linear infinite; opacity: 0; }
+    @keyframes floatUp {
+      0%   { opacity: 0; transform: translateY(0) rotate(0deg); }
+      10%  { opacity: 0.7; }
+      90%  { opacity: 0.3; }
+      100% { opacity: 0; transform: translateY(-100vh) rotate(720deg); }
+    }
+
+    /* ── AMHARIC BUBBLE ── */
+    .amharic-pop {
+      position: fixed; font-size: clamp(16px, 2.5vw, 22px); color: var(--yellow);
+      text-shadow: 1px 1px 2px rgba(0,0,0,0.9); pointer-events: none; z-index: 8000;
+      font-family: 'VT323', monospace; animation: floatFade 2.5s ease-out forwards;
+    }
+    @keyframes floatFade { 0%{opacity:1;transform:translateY(0) scale(1)} 100%{opacity:0;transform:translateY(-80px) scale(1.3)} }
+
+    /* ── CONFETTI CANVAS ── */
+    #ccanvas { position: fixed; inset: 0; pointer-events: none; z-index: 9999; }
+
+    /* ── CHEAT HINT ── */
+    #cheat-hint { position: fixed; bottom: 44px; right: 8px; color: rgba(255,255,255,0.25); font-size: 12px; z-index: 999; font-family: 'VT323', monospace; }
+  </style>
+</head>
+<body>
+
+<!-- ══════════════════════════ BOOT ══════════════════════════ -->
+<div id="boot" onclick="enterCafe()">
+  <div id="boot-lines"></div>
+  <div id="boot-enter" class="blink" style="display:none; color:#fff; font-size:clamp(16px,2.5vw,22px); margin-top:20px;">
+    ▶ CLICK ANYWHERE TO ENTER THE CAFÉ ◀
+  </div>
+</div>
+
+<!-- ══════════════════════════ DESKTOP ══════════════════════════ -->
+<div id="desktop">
+
+  <div class="cafe-hdr">
+    <div class="eth-bar"></div>
+    <div class="cafe-title">☕ LYDIA'S BIRTHDAY CAFÉ 🎂</div>
+    <div class="cafe-sub">📍 Est. since the day you arrived &nbsp;·&nbsp; መልካም ልደት! &nbsp;·&nbsp; FM 97.7</div>
+    <div class="eth-bar"></div>
+  </div>
+
+  <!-- Row 1: Inbox + About My Computer -->
+  <div class="g2">
+
+    <div class="win">
+      <div class="win-bar">
+        <span>📧 Birthday Inbox — Lydia@BunaCafe.et (5 unread)</span>
+        <div class="win-ctrls"><div class="wbtn">_</div><div class="wbtn">□</div><div class="wbtn">✕</div></div>
+      </div>
+      <div class="win-body" style="padding:0">
+        <div class="inbox-hdr">📬 <strong>5 unread messages</strong></div>
+        <div class="inbox-row">
+          <span class="i-from">Ato Tesfaye</span>
+          <span class="i-subj">Your buna is ready. Also, happy birthday 🎂</span>
+          <span class="i-new">NEW</span>
+        </div>
+        <div class="inbox-row">
+          <span class="i-from">The Year 1997</span>
+          <span class="i-subj">We remember when you arrived. Good times.</span>
+          <span class="i-new">NEW</span>
+        </div>
+        <div class="inbox-row">
+          <span class="i-from">Teddy Afro</span>
+          <span class="i-subj">Wrote you a birthday song. Check your spam 🎵</span>
+          <span class="i-new">NEW</span>
+        </div>
+        <div class="inbox-row">
+          <span class="i-from">The Sun ☀️</span>
+          <span class="i-subj">Shining extra hard today. You're welcome.</span>
+          <span class="i-new">NEW</span>
+        </div>
+        <div class="inbox-row">
+          <span class="i-from">SYSTEM</span>
+          <span class="i-subj">⚠️ BEAUTY_OVERFLOW detected in user "LYDIA". No action needed.</span>
+          <span class="i-new">NEW</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="win">
+      <div class="win-bar">
+        <span>💻 About My Computer — Birthday Edition™</span>
+        <div class="win-ctrls"><div class="wbtn">_</div><div class="wbtn">□</div><div class="wbtn">✕</div></div>
+      </div>
+      <div class="win-body">
+        <div class="pc">
+          <div><span class="lbl">Owner:</span> Lydia (Birthday Legend™)</div>
+          <div><span class="lbl">CPU:</span> Lydia Core™ @ MAX_LOVE GHz</div>
+          <div><span class="lbl">RAM:</span> INFINITE LOVE MB</div>
+          <div><span class="lbl">Storage:</span> Full of good memories</div>
+          <div><span class="lbl">Battery:</span> ████████████ 100%</div>
+          <div><span class="lbl">Kindness:</span> OVERFLOW ERROR ⚠️</div>
+          <div><span class="lbl">Swag:</span> YES (officially certified)</div>
+          <div><span class="lbl">OS:</span> Birthday Mode™ 1997 Edition 🎂</div>
+        </div>
+        <button class="btn" onclick="showPopup()" style="margin-top:10px">⚠️ View Error Log</button>
+      </div>
+    </div>
+
+  </div><!-- /row 1 -->
+
+  <!-- Row 2: Radio + Buna -->
+  <div class="g2">
+
+    <div class="win" id="radio-win">
+      <div class="win-bar">
+        <span>📻 EBS Birthday Radio — FM 97.7 LIVE</span>
+        <div class="win-ctrls"><div class="wbtn">_</div><div class="wbtn">□</div><div class="wbtn">✕</div></div>
+      </div>
+      <div class="win-body">
+        <div style="font-size:13px; color:#777; margin-bottom:8px;">🔴 LIVE · Broadcasting from Addis Ababa · Est. Today Only</div>
+        <div class="radio-scr">
+          <div class="radio-hdr">▌▌▌ EBS RADIO ░░ 📻 ░░ BIRTHDAY SPECIAL ▌▌▌</div>
+          <div class="radio-txt" id="radio-txt">〔 Click "Turn On" for breaking birthday news 〕</div>
+        </div>
+        <div>
+          <button class="btn btn-blue" onclick="playRadio()">📻 Turn on EBS Radio</button>
+          <button class="btn" onclick="nextRadio()">⏭ Next broadcast</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="win" id="buna-win">
+      <div class="win-bar">
+        <span>☕ Buna Ceremony — Compliment Generator</span>
+        <div class="win-ctrls"><div class="wbtn">_</div><div class="wbtn">□</div><div class="wbtn">✕</div></div>
+      </div>
+      <div class="win-body">
+        <div style="font-size:14px; color:#777; margin-bottom:8px;">The ceremony has 3 rounds. Each cup pours a new truth.</div>
+        <div class="cups">
+          <span class="cup" id="cup1">☕</span>
+          <span class="cup" id="cup2">☕</span>
+          <span class="cup" id="cup3">☕</span>
+          <span style="color:#999; font-size:14px; margin-left:8px;" id="cup-lbl">Cup 1 of 3 ready</span>
+        </div>
+        <div class="comp-card" id="comp-card">&nbsp;</div>
+        <div>
+          <button class="btn btn-green" onclick="pourBuna()">☕ Pour Buna</button>
+          <button class="btn" onclick="resetBuna()">↺ Reset Ceremony</button>
+        </div>
+      </div>
+    </div>
+
+  </div><!-- /row 2 -->
+
+  <!-- Row 3: Photo Studio + Cassette -->
+  <div class="g2">
+
+    <div class="win" id="photo-win">
+      <div class="win-bar">
+        <span>📸 90s Photo Studio — Official Poses</span>
+        <div class="win-ctrls"><div class="wbtn">_</div><div class="wbtn">□</div><div class="wbtn">✕</div></div>
+      </div>
+      <div class="win-body">
+        <div style="font-size:14px; color:#777; margin-bottom:8px;">Select your official birthday pose. A certificate will be issued.</div>
+        <div class="photo-frame">
+          <div class="p-emoji" id="p-emoji">🪞</div>
+          <div class="p-caption" id="p-caption">Awaiting your pose selection...</div>
+        </div>
+        <div class="pose-grid">
+          <div class="pbtn" onclick="setPose(0)">😐 Serious passport</div>
+          <div class="pbtn" onclick="setPose(1)">👑 Queen pose</div>
+          <div class="pbtn" onclick="setPose(2)">🙂 Auntie-approved</div>
+          <div class="pbtn" onclick="setPose(3)">😭 Didn't want this</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="win" id="cass-win">
+      <div class="win-bar">
+        <span>📼 Birthday Tape — Recorded 1997, Still Works</span>
+        <div class="win-ctrls"><div class="wbtn">_</div><div class="wbtn">□</div><div class="wbtn">✕</div></div>
+      </div>
+      <div class="win-body">
+        <div class="cass-body">
+          <div class="cass-label">
+            🎵 &nbsp; BIRTHDAY MIX TAPE Vol. 1 &nbsp; 🎵<br>
+            <small style="font-size:11px; opacity:0.9">Side A: For Lydia — Do Not Record Over</small>
+          </div>
+          <div class="cass-holes">
+            <div class="reel" id="rl">⬡</div>
+            <span style="color:#444; font-size:13px">━━━━━━━</span>
+            <div class="reel" id="rr">⬡</div>
+          </div>
+          <div class="tape-msg" id="tape-msg">〔 Insert tape and press ▶ PLAY 〕</div>
+        </div>
+        <button class="btn btn-blue" id="tape-btn" onclick="playTape()">▶ Play Birthday Tape</button>
+      </div>
+    </div>
+
+  </div><!-- /row 3 -->
+
+  <!-- Tracker + Unlock -->
+  <div style="max-width:960px; margin:0 auto">
+    <div class="tracker" id="tracker">💾 Progress: ░░░░ 0/4 &nbsp;·&nbsp; Welcome to the café, explore a little!</div>
+    <div class="unlock-wrap">
+      <button id="unlock-btn" onclick="showFinal()">🎂 Open Your Birthday Message →</button>
+    </div>
+  </div>
+
+  <div style="height:24px"></div>
+</div><!-- /desktop -->
+
+<!-- ══════════════════════════ TASKBAR ══════════════════════════ -->
+<div id="tb">
+  <button class="tb-start" onclick="toggleSmenu()">🇪🇹 Melkam!</button>
+  <div class="tb-div"></div>
+  <div class="tb-icns">☕ 🎂 📻 📼</div>
+  <div class="tb-clk" id="clk">--:--</div>
+</div>
+
+<!-- Start Menu -->
+<div id="smenu">
+  <div class="sm-item" onclick="scrollTo2('radio-win')">📻 EBS Radio</div>
+  <div class="sm-item" onclick="scrollTo2('buna-win')">☕ Buna Ceremony</div>
+  <div class="sm-item" onclick="scrollTo2('photo-win')">📸 Photo Studio</div>
+  <div class="sm-item" onclick="scrollTo2('cass-win')">📼 Birthday Tape</div>
+  <div class="sm-sep"></div>
+  <div class="sm-item" onclick="showPopup(); toggleSmenu()">⚠️ Error Log</div>
+  <div class="sm-item" onclick="showFinal(); toggleSmenu()">🎂 Birthday Message</div>
+  <div class="sm-sep"></div>
+  <div class="sm-item" style="color:#999; cursor:not-allowed">🚪 Shut Down (disabled today)</div>
+</div>
+
+<!-- ══════════════════════════ ERROR POPUP ══════════════════════════ -->
+<div id="popup">
+  <div class="pop-bar">
+    <span>⚠️ BIRTHDAY.EXE — Critical Error Report</span>
+    <div class="wbtn" onclick="closePopup()" style="background:var(--gray)">✕</div>
+  </div>
+  <div class="pop-body">
+    <div class="pop-icon">💫</div>
+    <strong>BEAUTY_OVERFLOW.EXE</strong> has encountered a critical error and needs to celebrate.<br><br>
+    <em>Cause: User profile "LYDIA" contains values exceeding all known limits for charisma, warmth, and general amazingness.</em><br><br>
+    The system has chosen to throw a party instead of crashing.<br><br>
+    <span style="font-size:13px; color:#666">Error code: 0x1997BDAY &nbsp;|&nbsp; Severity: MAXIMUM JOY</span>
+    <div style="margin-top:14px; text-align:right">
+      <button class="btn" onclick="closePopup()">OK (celebrate anyway)</button>
+      <button class="btn" onclick="closePopup()">Ignore (not an option)</button>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════ TOAST ══════════════════════════ -->
+<div id="toast"></div>
+
+<!-- ══════════════════════════ FINAL SCREEN ══════════════════════════ -->
+<div id="final">
+  <div class="f-pre">✨ BIRTHDAY_MESSAGE.EXE — FULLY LOADED ✨</div>
+  <div class="f-bar"></div>
+
+  <div class="f-name" style="font-size:clamp(30px,6vw,52px)">HAPPY BIRTHDAY,</div>
+  <div class="f-name">LYDIA!</div>
+  <div class="f-amh">🇪🇹 &nbsp; መልካም ልደት! &nbsp; 🇪🇹</div>
+
+  <div class="f-bar"></div>
+  <div class="f-icons">☕ 🎂 🎈 📻 🎊 🕯️</div>
+  <div class="f-bar"></div>
+
+  <div class="f-msg">
+    Dear Lydia,<br><br>
+    This tape was recorded in 1997, but somehow it knew.<br><br>
+    It knew that one day, someone extraordinary would press play.<br><br>
+    Someone who walks into cold rooms and makes them warm just by being present.
+    Someone whose laugh is the first thing people remember about a night.
+    Someone who doesn't realise how many people light up when they hear her name.<br><br>
+    That someone is you.<br><br>
+    Today the <em style="color:var(--gold)">buna</em> is stronger, the music is louder,
+    and the whole room is brighter because of you.<br><br>
+    May this new year bring you soft mornings, big wins, loud laughter,
+    and people who celebrate you the way you deserve —
+    <em>loudly, warmly, and with very good food.</em><br><br>
+    <strong style="color:var(--yellow)">ደስ ይበልሽ — be happy, always. 🌟</strong>
+  </div>
+
+  <div class="f-bar"></div>
+
+  <div class="f-extra">
+    [ From your internet café family, with all the love ]<br>
+    Uptime: <span id="f-years"></span> remarkable years and counting
+  </div>
+
+  <button class="btn" onclick="closeFinal()" style="margin-top:28px; font-size:20px; padding:8px 26px">
+    ↩ Return to Café
+  </button>
+</div>
+
+<!-- Confetti -->
+<canvas id="ccanvas"></canvas>
+<div id="cheat-hint">Type LYDIA for a surprise ✨</div>
+
+<!-- ══════════════════════════ SCRIPT ══════════════════════════ -->
+<script>
+// ── DATA ──────────────────────────────────────────────────────
+const BIRTH_YEAR = 1997;
+
+const bootSeq = [
+  { t:200,  cls:"b-title", tx:"BIRTHDAY BIOS v9.7 — Ethiopian Café Edition" },
+  { t:400,  cls:"b-glow",  tx:"════════════════════════════════════════════════" },
+  { t:700,  cls:"b-ok",    tx:"CPU: Lydia Core™ @ MAX_LOVE GHz ................. OK" },
+  { t:1000, cls:"b-ok",    tx:"RAM: INFINITE LOVE MB ............................. OK" },
+  { t:1300, cls:"b-ok",    tx:"Ethiopian Coffee Module ☕ ........................ OK" },
+  { t:1600, cls:"b-ok",    tx:"Habesha Party System 🎉 ........................... OK" },
+  { t:1900, cls:"b-ok",    tx:"Loading Cassette Memories 📼 ....................... OK" },
+  { t:2200, cls:"b-warn",  tx:"Beauty Level Detector: Running .......... OVERFLOW ⚠️" },
+  { t:2500, cls:"b-warn",  tx:"Swag Measurement: Calibrating ............ TOO HIGH ⚠️" },
+  { t:2800, cls:"b-warn",  tx:"Charm Module: Quantifying ............. IMMEASURABLE ⚠️" },
+  { t:3100, cls:"b-glow",  tx:"" },
+  { t:3200, cls:"b-warn",  tx:"SYSTEM: Extraordinary birthday energy detected." },
+  { t:3500, cls:"b-warn",  tx:"SYSTEM: Proceeding with full celebration mode." },
+  { t:3700, cls:"b-glow",  tx:"" },
+  { t:3800, cls:"b-glow",  tx:"Starting Birthday Café............" },
+  { t:4300, cls:"b-glow",  tx:"[▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓] 100%" },
+  { t:4400, cls:"b-glow",  tx:"" },
+  { t:4500, cls:"b-ok",    tx:"✓ Coffee: Hot and ready ☕" },
+  { t:4700, cls:"b-ok",    tx:"✓ Cake: En route 🎂" },
+  { t:4900, cls:"b-ok",    tx:"✓ Music: Loaded 🎵" },
+  { t:5100, cls:"b-ok",    tx:"✓ Love: Overflowing ♥" },
+  { t:5300, cls:"b-glow",  tx:"" },
+  { t:5500, cls:"b-title", tx:"BIRTHDAY MODE ACTIVATED — Welcome, Lydia. 🌟" },
+];
+
+const radioMsgs = [
+  "📡 Breaking news: Today's birthday girl has been officially declared a national treasure. All buna ceremonies are held in her honour.",
+  "🌤️ Weather update: 100% chance of cake. Scattered confetti throughout the day. High temperature of pure joy. No umbrella needed.",
+  "🎵 Music desk: Teddy Afro reportedly added a new verse about Lydia. The song is reportedly 'too real'. Details at 9.",
+  "🏆 Sports update: In this year's Birthday Olympics, Lydia has taken gold in: being amazing, dressing dangerously well, and making the whole room laugh.",
+  "📌 Traffic report: All roads in Addis are mysteriously clear today. The universe is simply making way for the birthday girl.",
+  "🌍 International news: After lengthy negotiations, world leaders have agreed — today is a global holiday. Lydia is the reason.",
+  "📻 And now, a word from our sponsor: The buna you're drinking? It tastes better today. Science cannot explain it. We think it's her fault.",
+];
+
+const compliments = [
+  { lbl:"First cup ☕",    txt:"She is kind — the real kind. The kind that stays." },
+  { lbl:"Second cup ☕☕",  txt:"She is funny — dangerously funny. You don't see it coming until you're already laughing." },
+  { lbl:"Third cup ☕☕☕", txt:"She is dangerous when she dresses up. We have all seen it. There are no further words." },
+];
+
+const poses = [
+  { em:"😐", cap:"OFFICIAL BIRTHDAY PASSPORT PHOTO\nCertified: Intensely iconic. Stamp valid forever." },
+  { em:"👑", cap:"QUEEN MODE — FULLY ACTIVATED\nCertified: Royally born on this exact day." },
+  { em:"🙂", cap:"THE AUNTIE-APPROVED SMILE™\nCertified: Proper. Elegant. 10/10. Aunties agree." },
+  { em:"😭", cap:"\"I DIDN'T WANT THIS PHOTO\"\nCertified: Still the best one in the whole album." },
+];
+
+const amharicPops = [
+  "መልካም ልደት! 🎂", "ደስ ይበልሽ! ✨", "ቡና ♥", "ዮ! 🎉", "ዋው! 🌟", "ምን ዋዛ! 💫", "ፍቅር! ❤️", "እናቴ! 🌸",
+];
+
+const tesfayeMsgs = [
+  "☕ Ato Tesfaye says: \"Welcome to my café. Are you ordering or just sitting?\"",
+  "☕ Ato Tesfaye says: \"The buna ceremony has rules. Three cups. No skipping. My café, my rules.\"",
+  "☕ Ato Tesfaye says: \"That cassette? My personal collection from 1997. Handle with care.\"",
+  "☕ Ato Tesfaye says: \"I don't normally play birthday music here. But for Lydia — fine.\"",
+  "☕ Ato Tesfaye says: \"You cannot leave without saying Melkam Lidet to someone today. It's the law.\"",
+  "☕ Ato Tesfaye says: \"The radio said she's a national treasure. I knew this already.\"",
+  "☕ Ato Tesfaye says: \"Three cups of buna and one birthday message. That is the correct order.\"",
+];
+
+const tapeFull =
+  "Dear Lydia,\n\n" +
+  "This tape was recorded in 1997.\n" +
+  "It sat in this café, waiting.\n\n" +
+  "The person who made it wanted you to know:\n\n" +
+  "You are the kind of person who makes every room feel like home. " +
+  "Not because you try. Because you are.\n\n" +
+  "Your laugh is the first sound people remember from a night. " +
+  "Your warmth reaches people before you even say a word.\n\n" +
+  "Today, the buna is stronger,\n" +
+  "the music is louder,\n" +
+  "and this entire café smells like birthday.\n\n" +
+  "Happy Birthday, Lydia.\n\n" +
+  "እናቴ, ደስ ይበልሽ ♥";
+
+// ── STATE ─────────────────────────────────────────────────────
+let radioIdx = 0, radioOn = false;
+let bunaCount = 0;
+let tapeActive = false, tapeTyper = null;
+let interactions = new Set();
+let popupOpen = false;
+let smenuOpen = false;
+let cheatBuf = '';
+let tesfayeIdx = 0;
+
+// ── BOOT ──────────────────────────────────────────────────────
+function startBoot() {
+  const container = document.getElementById('boot-lines');
+  bootSeq.forEach(({ t, cls, tx }) => {
+    setTimeout(() => {
+      const d = document.createElement('div');
+      d.className = cls;
+      d.textContent = tx;
+      container.appendChild(d);
+      container.scrollTop = container.scrollHeight;
+    }, t);
+  });
+  setTimeout(() => {
+    document.getElementById('boot-enter').style.display = 'block';
+  }, bootSeq[bootSeq.length - 1].t + 900);
+}
+
+function enterCafe() {
+  document.getElementById('boot').style.transition = 'opacity 0.6s';
+  document.getElementById('boot').style.opacity = '0';
+  setTimeout(() => {
+    document.getElementById('boot').style.display = 'none';
+    document.getElementById('desktop').style.display = 'block';
+    document.getElementById('tb').classList.add('show');
+    spawnFloaties();
+    startClock();
+    setTimeout(startTesfaye, 6000);
+  }, 600);
+}
+
+// ── FLOATIES ──────────────────────────────────────────────────
+function spawnFloaties() {
+  const emojis = ['☕', '🎈', '🎂', '🕯️', '🎊', '📼', '📻', '⭐', '🌸'];
+  for (let i = 0; i < 14; i++) {
+    const el = document.createElement('div');
+    el.className = 'floatie';
+    el.textContent = emojis[Math.floor(Math.random() * emojis.length)];
+    el.style.left = (Math.random() * 96) + 'vw';
+    el.style.bottom = '-60px';
+    const dur = 8 + Math.random() * 12;
+    el.style.animationDuration = dur + 's';
+    el.style.animationDelay = (Math.random() * dur) + 's';
+    el.style.fontSize = (16 + Math.random() * 18) + 'px';
+    document.body.appendChild(el);
+  }
+}
+
+// ── CLOCK ─────────────────────────────────────────────────────
+function startClock() {
+  function update() {
+    const now = new Date();
+    const h = String(now.getHours()).padStart(2,'0');
+    const m = String(now.getMinutes()).padStart(2,'0');
+    document.getElementById('clk').textContent = h + ':' + m;
+  }
+  update();
+  setInterval(update, 15000);
+}
+
+// ── INTERACTION TRACKING ──────────────────────────────────────
+function track(id) {
+  if (!interactions.has(id)) {
+    interactions.add(id);
+    const n = interactions.size;
+    const bars = '▓'.repeat(n) + '░'.repeat(4 - n);
+    const msgs = [
+      'Welcome to the café, explore a little!',
+      '1 down. The buna is warming up ☕',
+      '2 down. Ato Tesfaye is impressed.',
+      '3 down. One more to unlock the birthday message...',
+      '✨ All explored! Your birthday message awaits.',
+    ];
+    document.getElementById('tracker').textContent = '💾 Progress: ' + bars + ' ' + n + '/4  ·  ' + msgs[n];
+    if (n >= 3) document.getElementById('unlock-btn').classList.add('vis');
+    spawnAmharic();
+  }
+}
+
+// ── AMHARIC BUBBLES ───────────────────────────────────────────
+function spawnAmharic() {
+  const el = document.createElement('div');
+  el.className = 'amharic-pop';
+  el.textContent = amharicPops[Math.floor(Math.random() * amharicPops.length)];
+  el.style.left = (20 + Math.random() * 60) + 'vw';
+  el.style.top = (20 + Math.random() * 55) + 'vh';
+  document.body.appendChild(el);
+  setTimeout(() => el.remove(), 2600);
+}
+
+// ── RADIO ─────────────────────────────────────────────────────
+function playRadio() {
+  radioOn = true;
+  showRadio(radioMsgs[radioIdx]);
+  track('radio');
+}
+
+function nextRadio() {
+  if (!radioOn) { playRadio(); return; }
+  radioIdx = (radioIdx + 1) % radioMsgs.length;
+  showRadio(radioMsgs[radioIdx]);
+  track('radio');
+}
+
+function showRadio(msg) {
+  const el = document.getElementById('radio-txt');
+  el.textContent = '';
+  let i = 0;
+  clearInterval(window._radioTyper);
+  window._radioTyper = setInterval(() => {
+    el.textContent += msg[i++];
+    if (i >= msg.length) clearInterval(window._radioTyper);
+  }, 28);
+}
+
+// ── BUNA ──────────────────────────────────────────────────────
+function pourBuna() {
+  if (bunaCount >= 3) return;
+  const c = compliments[bunaCount];
+  document.getElementById('cup' + (bunaCount + 1)).classList.add('on');
+  bunaCount++;
+  const lbl = bunaCount < 3 ? 'Cup ' + (bunaCount + 1) + ' of 3 ready' : 'All 3 cups poured ✓';
+  document.getElementById('cup-lbl').textContent = lbl;
+  document.getElementById('comp-card').textContent = c.lbl + ': ' + c.txt;
+  track('buna');
+  if (bunaCount === 3) showToast('☕ All three cups poured. The ceremony is complete. ደስ ይበልሽ!');
+}
+
+function resetBuna() {
+  bunaCount = 0;
+  ['cup1','cup2','cup3'].forEach(id => document.getElementById(id).classList.remove('on'));
+  document.getElementById('cup-lbl').textContent = 'Cup 1 of 3 ready';
+  document.getElementById('comp-card').innerHTML = '&nbsp;';
+}
+
+// ── PHOTO STUDIO ──────────────────────────────────────────────
+function setPose(i) {
+  const p = poses[i];
+  const oldEmoji = document.getElementById('p-emoji');
+  oldEmoji.style.transition = 'transform 0.3s';
+  oldEmoji.style.transform = 'scale(0)';
+  setTimeout(() => {
+    document.getElementById('p-emoji').textContent = p.em;
+    document.getElementById('p-caption').textContent = p.cap;
+    oldEmoji.style.transform = 'scale(1)';
+  }, 150);
+  track('photo');
+}
+
+// ── CASSETTE ──────────────────────────────────────────────────
+function playTape() {
+  if (tapeActive) return;
+  tapeActive = true;
+  document.getElementById('tape-btn').disabled = true;
+  document.getElementById('tape-btn').textContent = '■ Playing...';
+  document.getElementById('rl').classList.add('spin');
+  document.getElementById('rr').classList.add('spin');
+  typeMessage(tapeFull, document.getElementById('tape-msg'), () => {
+    document.getElementById('rl').classList.remove('spin');
+    document.getElementById('rr').classList.remove('spin');
+    document.getElementById('tape-btn').textContent = '▶ Play Again';
+    document.getElementById('tape-btn').disabled = false;
+    document.getElementById('tape-btn').onclick = () => {
+      tapeActive = false;
+      document.getElementById('tape-msg').textContent = '';
+      playTape();
+    };
+    track('tape');
+  });
+  track('tape');
+}
+
+function typeMessage(txt, el, done) {
+  el.textContent = '';
+  let i = 0;
+  tapeTyper = setInterval(() => {
+    el.textContent += txt[i++];
+    if (i >= txt.length) { clearInterval(tapeTyper); if (done) done(); }
+  }, 32);
+}
+
+// ── POPUP ─────────────────────────────────────────────────────
+function showPopup() {
+  document.getElementById('popup').classList.add('show');
+  popupOpen = true;
+}
+function closePopup() {
+  document.getElementById('popup').classList.remove('show');
+  popupOpen = false;
+}
+
+// ── START MENU ────────────────────────────────────────────────
+function toggleSmenu() {
+  smenuOpen = !smenuOpen;
+  document.getElementById('smenu').classList.toggle('show', smenuOpen);
+}
+function scrollTo2(id) {
+  document.getElementById(id)?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  smenuOpen = false;
+  document.getElementById('smenu').classList.remove('show');
+}
+document.addEventListener('click', e => {
+  if (!e.target.closest('#smenu') && !e.target.closest('.tb-start')) {
+    smenuOpen = false;
+    document.getElementById('smenu').classList.remove('show');
+  }
+});
+
+// ── TOAST (Ato Tesfaye) ───────────────────────────────────────
+function showToast(msg, dur = 4000) {
+  const el = document.getElementById('toast');
+  el.textContent = msg;
+  el.classList.add('show');
+  clearTimeout(window._toastTimer);
+  window._toastTimer = setTimeout(() => el.classList.remove('show'), dur);
+}
+function startTesfaye() {
+  showToast(tesfayeMsgs[0], 5000);
+  setInterval(() => {
+    tesfayeIdx = (tesfayeIdx + 1) % tesfayeMsgs.length;
+    showToast(tesfayeMsgs[tesfayeIdx], 5000);
+  }, 28000);
+}
+
+// ── FINAL SCREEN ──────────────────────────────────────────────
+function showFinal() {
+  document.getElementById('f-years').textContent = new Date().getFullYear() - BIRTH_YEAR;
+  document.getElementById('final').classList.add('show');
+  launchConfetti();
+}
+function closeFinal() {
+  document.getElementById('final').classList.remove('show');
+  const c = document.getElementById('ccanvas');
+  c.getContext('2d').clearRect(0, 0, c.width, c.height);
+}
+
+// ── CONFETTI ──────────────────────────────────────────────────
+function launchConfetti() {
+  const cv = document.getElementById('ccanvas');
+  const ctx = cv.getContext('2d');
+  cv.width = window.innerWidth;
+  cv.height = window.innerHeight;
+  const colors = ['#FCDD09','#078930','#DA121A','#FFF8EC','#D4AF37','#818CF8','#ff69b4','#fff'];
+  const ps = Array.from({length: 220}, () => ({
+    x: Math.random() * cv.width,
+    y: Math.random() * cv.height - cv.height,
+    w: Math.random() * 11 + 4,
+    h: Math.random() * 5 + 2,
+    c: colors[Math.floor(Math.random() * colors.length)],
+    rot: Math.random() * 360,
+    spd: Math.random() * 3.5 + 1,
+    rs: (Math.random() - 0.5) * 6,
+    osc: Math.random() * 0.04,
+  }));
+  let frame;
+  function draw() {
+    ctx.clearRect(0, 0, cv.width, cv.height);
+    ps.forEach(p => {
+      p.y += p.spd;
+      p.x += Math.sin(p.y * p.osc) * 1.5;
+      p.rot += p.rs;
+      ctx.save();
+      ctx.globalAlpha = Math.max(0, 1 - p.y / cv.height);
+      ctx.translate(p.x, p.y);
+      ctx.rotate(p.rot * Math.PI / 180);
+      ctx.fillStyle = p.c;
+      ctx.fillRect(-p.w/2, -p.h/2, p.w, p.h);
+      ctx.restore();
+    });
+    if (ps.every(p => p.y > cv.height + 40)) {
+      cancelAnimationFrame(frame);
+      ctx.clearRect(0, 0, cv.width, cv.height);
+    } else {
+      frame = requestAnimationFrame(draw);
+    }
+  }
+  draw();
+}
+
+// ── CHEAT CODE: type "LYDIA" ──────────────────────────────────
+document.addEventListener('keydown', e => {
+  cheatBuf = (cheatBuf + e.key.toUpperCase()).slice(-5);
+  if (cheatBuf === 'LYDIA') {
+    cheatBuf = '';
+    launchConfetti();
+    showToast('🎊 LYDIA CHEAT CODE ACTIVATED! You found the secret! 🎊', 4000);
+    for (let i = 0; i < 6; i++) setTimeout(spawnAmharic, i * 300);
+  }
+});
+
+// ── KEYBOARD SHORTCUT: close popup with Escape ───────────────
+document.addEventListener('keydown', e => {
+  if (e.key === 'Escape') { closePopup(); }
+});
+
+// ── INIT ──────────────────────────────────────────────────────
+window.addEventListener('load', startBoot);
+</script>
+</body>
+</html>
